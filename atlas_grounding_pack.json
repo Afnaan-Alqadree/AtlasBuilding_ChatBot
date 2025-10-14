@@ -1,0 +1,694 @@
+{
+  "generated_at": "2025-10-03T08:08:11.660851+00:00",
+  "notes": [
+    "Use DuckDB for queries. Only SELECT/WITH are allowed; never modify data.",
+    "Interpret 'now' as the last 60 minutes relative to MAX(event_timestamp) in events_all.",
+    "If timestamps are epoch milliseconds, convert via to_timestamp(col/1000).",
+    "Prefer aggregated answers (AVG occupancy, top-N, trends) and include the exact numbers used."
+  ],
+  "data_window": {
+    "ts_min": "2025-03-08T22:03:21+01:00",
+    "ts_max": "2025-03-31T01:58:17+02:00"
+  },
+  "dictionaries": {
+    "floors": [
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      9,
+      10,
+      11
+    ],
+    "space_types": [
+      "occupancy"
+    ]
+  },
+  "tables": {
+    "events_all": {
+      "name": "events_all",
+      "exists": true,
+      "schema": [
+        {
+          "column": "event_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "event_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "column": "event_timestamp",
+          "dtype": "BIGINT",
+          "nullable": true
+        },
+        {
+          "column": "space_id",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "occupancy",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "arrival_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "arrival_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        }
+      ],
+      "sample_rows": [
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:33+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "ce199e21-ccf2-404a-95b4-1b5efc27536d",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:46+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:05+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:47+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:04+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:06+0000"
+        }
+      ]
+    },
+    "events_office": {
+      "name": "events_office",
+      "exists": true,
+      "schema": [
+        {
+          "column": "event_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "event_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "column": "event_timestamp",
+          "dtype": "BIGINT",
+          "nullable": true
+        },
+        {
+          "column": "space_id",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "occupancy",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "arrival_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "arrival_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        }
+      ],
+      "sample_rows": [
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:33+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "ce199e21-ccf2-404a-95b4-1b5efc27536d",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:46+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:05+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:47+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:04+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:06+0000"
+        }
+      ]
+    },
+    "events_meeting": {
+      "name": "events_meeting",
+      "exists": true,
+      "schema": [
+        {
+          "column": "event_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "event_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "column": "event_timestamp",
+          "dtype": "BIGINT",
+          "nullable": true
+        },
+        {
+          "column": "space_id",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "occupancy",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "arrival_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "arrival_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        }
+      ],
+      "sample_rows": [
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:07:46+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8445bccd-5c70-48c6-b889-8209f407c4db",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 21:27:02+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:09:37+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "b933c534-3f83-4142-bc78-080848b9625c",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 21:27:05+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:05:45+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "24d1fccd-bafe-43a5-9473-5cbff03879b5",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 21:27:05+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:03:21+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "fd32a4cd-9687-4c48-a6c8-536865a4eafb",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 21:27:05+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:10:13+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "07b0074e-550e-4e62-8e7d-e588ecf5f724",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 21:34:00+0000"
+        }
+      ]
+    },
+    "events_enriched": {
+      "name": "events_enriched",
+      "exists": true,
+      "schema": [
+        {
+          "column": "event_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "event_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "column": "event_timestamp",
+          "dtype": "BIGINT",
+          "nullable": true
+        },
+        {
+          "column": "space_id",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "occupancy",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "arrival_date",
+          "dtype": "DATE",
+          "nullable": true
+        },
+        {
+          "column": "arrival_time",
+          "dtype": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "column": "ts",
+          "dtype": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true
+        },
+        {
+          "column": "hour",
+          "dtype": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true
+        },
+        {
+          "column": "day",
+          "dtype": "TIMESTAMP WITH TIME ZONE",
+          "nullable": true
+        }
+      ],
+      "sample_rows": [
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:33+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "ce199e21-ccf2-404a-95b4-1b5efc27536d",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000",
+          "ts": "2025-03-08 21:57:33+0000",
+          "hour": "2025-03-08 21:00:00+0000",
+          "day": "2025-03-07 23:00:00+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:46+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:02+0000",
+          "ts": "2025-03-08 21:57:46+0000",
+          "hour": "2025-03-08 21:00:00+0000",
+          "day": "2025-03-07 23:00:00+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 21:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 22:14:05+0000",
+          "ts": "2025-03-08 21:57:32+0000",
+          "hour": "2025-03-08 21:00:00+0000",
+          "day": "2025-03-07 23:00:00+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:47+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "8b8cc89f-8c3f-4974-b9e4-776f114971b8",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:04+0000",
+          "ts": "2025-03-08 22:57:47+0000",
+          "hour": "2025-03-08 22:00:00+0000",
+          "day": "2025-03-07 23:00:00+0000"
+        },
+        {
+          "event_date": "2025-03-08 00:00:00+0000",
+          "event_time": "2025-03-08 22:57:32+0000",
+          "event_timestamp": "1970-01-01 00:29:01+0000",
+          "space_id": "a585c2f6-ddc8-4e9b-acbf-16bebc3c75ef",
+          "occupancy": "unoccupied",
+          "arrival_date": "2025-03-08 00:00:00+0000",
+          "arrival_time": "2025-03-08 23:14:06+0000",
+          "ts": "2025-03-08 22:57:32+0000",
+          "hour": "2025-03-08 22:00:00+0000",
+          "day": "2025-03-07 23:00:00+0000"
+        }
+      ]
+    },
+    "spaces": {
+      "name": "spaces",
+      "exists": true,
+      "schema": [
+        {
+          "column": "storey_uuid",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "dataSource",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "functionType",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "interiorSpace",
+          "dtype": "BOOLEAN",
+          "nullable": true
+        },
+        {
+          "column": "sensor_name",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "room_name",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "spaceType",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "uuid",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "coordinates",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "type",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "storey_floorId",
+          "dtype": "BIGINT",
+          "nullable": true
+        },
+        {
+          "column": "storey_floorPlan",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "storey_name",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "storey_geoReference",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "building_address",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "building_geo",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "building_name",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "label",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "code",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "room_id",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "room_key",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "display_name",
+          "dtype": "VARCHAR",
+          "nullable": true
+        },
+        {
+          "column": "floor_n",
+          "dtype": "INTEGER",
+          "nullable": true
+        }
+      ],
+      "sample_rows": [
+        {
+          "storey_uuid": "07be2482-c02d-403b-a233-c29d41b1add0",
+          "dataSource": "dynet",
+          "functionType": "occupancy",
+          "interiorSpace": true,
+          "sensor_name": "DUS360CR #23083",
+          "room_name": "3.325 - Kantoor",
+          "spaceType": "occupancy",
+          "uuid": "dd9b0641-a9ed-404e-9ecb-164055b63918",
+          "coordinates": "[{latitude=51.44805733493447, longitude=5.48627946193367}, {latitude=51.448057314199815, longitude=5.486236219676476}, {latitude=51.4480842638067, longitude=5.486236186393727}, {latitude=51.44808428454136, longitude=5.4862794286764665}, {latitude=51.44805733493447, longitude=5.48627946193367}]",
+          "type": "polygon",
+          "storey_floorId": "1970-01-01 00:00:00+0000",
+          "storey_floorPlan": "{\"width\":\"20000\",\"name\":\"EF644EA6-3640-4F09-80B7-1D230250EC09.png\",\"imageURI\":\"/buildingStoreyImage/07be2482-c02d-403b-a233-c29d41b1add0\",\"height\":\"3000\"}",
+          "storey_name": "Verdieping 03",
+          "storey_geoReference": "[{\"pixelCoordinates\":{\"x\":19812.0,\"y\":2696.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486001}},{\"pixelCoordinates\":{\"x\":19826.0,\"y\":303.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486305}},{\"pixelCoordinates\":{\"x\":177.0,\"y\":2706.213134765625},\"geoCoordinates\":{\"latitude\":51.44708,\"longitude\":5.485995}}]",
+          "building_address": "{\"postalBox\":\"5612 AE\",\"country\":\"Netherlands\",\"addressLines\":\"3 : Groene Loper\",\"countryCode\":\"NL\",\"region\":\"Noord Brabant\",\"town\":\"Eindhoven\"}",
+          "building_geo": "{\"latitude\":51.4482114,\"longitude\":5.4858237}",
+          "building_name": "Atlas",
+          "label": "3.325 - Kantoor",
+          "code": "3.325",
+          "room_id": "3325",
+          "room_key": "3325",
+          "display_name": "3.325",
+          "floor_n": "1970-01-01 00:00:00+0000"
+        },
+        {
+          "storey_uuid": "07be2482-c02d-403b-a233-c29d41b1add0",
+          "dataSource": "dynet",
+          "functionType": "occupancy",
+          "interiorSpace": true,
+          "sensor_name": "DUS360CR #13078",
+          "room_name": "3.201 - Collegezaal",
+          "spaceType": "occupancy",
+          "uuid": "90427475-e249-441d-bc12-6de1e3b6d55a",
+          "coordinates": "[{latitude=51.44748072397743, longitude=5.48606346597441}, {latitude=51.44748070324277, longitude=5.486020224263356}, {latitude=51.447507652849644, longitude=5.486020190980912}, {latitude=51.44750767358432, longitude=5.486063432717614}, {latitude=51.44748072397743, longitude=5.48606346597441}]",
+          "type": "polygon",
+          "storey_floorId": "1970-01-01 00:00:00+0000",
+          "storey_floorPlan": "{\"width\":\"20000\",\"name\":\"EF644EA6-3640-4F09-80B7-1D230250EC09.png\",\"imageURI\":\"/buildingStoreyImage/07be2482-c02d-403b-a233-c29d41b1add0\",\"height\":\"3000\"}",
+          "storey_name": "Verdieping 03",
+          "storey_geoReference": "[{\"pixelCoordinates\":{\"x\":19812.0,\"y\":2696.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486001}},{\"pixelCoordinates\":{\"x\":19826.0,\"y\":303.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486305}},{\"pixelCoordinates\":{\"x\":177.0,\"y\":2706.213134765625},\"geoCoordinates\":{\"latitude\":51.44708,\"longitude\":5.485995}}]",
+          "building_address": "{\"postalBox\":\"5612 AE\",\"country\":\"Netherlands\",\"addressLines\":\"3 : Groene Loper\",\"countryCode\":\"NL\",\"region\":\"Noord Brabant\",\"town\":\"Eindhoven\"}",
+          "building_geo": "{\"latitude\":51.4482114,\"longitude\":5.4858237}",
+          "building_name": "Atlas",
+          "label": "3.201 - Collegezaal",
+          "code": "3.201",
+          "room_id": "3201",
+          "room_key": "3201",
+          "display_name": "3.201",
+          "floor_n": "1970-01-01 00:00:00+0000"
+        },
+        {
+          "storey_uuid": "07be2482-c02d-403b-a233-c29d41b1add0",
+          "dataSource": "dynet",
+          "functionType": "occupancy",
+          "interiorSpace": true,
+          "sensor_name": "DUS360CR #23082",
+          "room_name": "3.323 - Kantoortuin Werklandschap",
+          "spaceType": "occupancy",
+          "uuid": "edbd9957-0c50-4956-99ae-f5f7b15ec288",
+          "coordinates": "[{latitude=51.44812643783395, longitude=5.4862794775928885}, {latitude=51.448126417099296, longitude=5.486236235270252}, {latitude=51.44815336670617, longitude=5.486236201987402}, {latitude=51.44815338744083, longitude=5.486279444335584}, {latitude=51.44812643783395, longitude=5.4862794775928885}]",
+          "type": "polygon",
+          "storey_floorId": "1970-01-01 00:00:00+0000",
+          "storey_floorPlan": "{\"width\":\"20000\",\"name\":\"EF644EA6-3640-4F09-80B7-1D230250EC09.png\",\"imageURI\":\"/buildingStoreyImage/07be2482-c02d-403b-a233-c29d41b1add0\",\"height\":\"3000\"}",
+          "storey_name": "Verdieping 03",
+          "storey_geoReference": "[{\"pixelCoordinates\":{\"x\":19812.0,\"y\":2696.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486001}},{\"pixelCoordinates\":{\"x\":19826.0,\"y\":303.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486305}},{\"pixelCoordinates\":{\"x\":177.0,\"y\":2706.213134765625},\"geoCoordinates\":{\"latitude\":51.44708,\"longitude\":5.485995}}]",
+          "building_address": "{\"postalBox\":\"5612 AE\",\"country\":\"Netherlands\",\"addressLines\":\"3 : Groene Loper\",\"countryCode\":\"NL\",\"region\":\"Noord Brabant\",\"town\":\"Eindhoven\"}",
+          "building_geo": "{\"latitude\":51.4482114,\"longitude\":5.4858237}",
+          "building_name": "Atlas",
+          "label": "3.323 - Kantoortuin Werklandschap",
+          "code": "3.323",
+          "room_id": "3323",
+          "room_key": "3323",
+          "display_name": "3.323",
+          "floor_n": "1970-01-01 00:00:00+0000"
+        },
+        {
+          "storey_uuid": "07be2482-c02d-403b-a233-c29d41b1add0",
+          "dataSource": "dynet",
+          "functionType": "occupancy",
+          "interiorSpace": true,
+          "sensor_name": "DUS360CR #23012",
+          "room_name": "3.423 - Kantoor",
+          "spaceType": "occupancy",
+          "uuid": "b03a946a-107b-4e1b-b6ab-844d46db2643",
+          "coordinates": "[{latitude=51.44847246027675, longitude=5.486277876195311}, {latitude=51.44847243954209, longitude=5.486234633545052}, {latitude=51.44849938914896, longitude=5.486234600261896}, {latitude=51.448499409883645, longitude=5.4862778429378025}, {latitude=51.44847246027675, longitude=5.486277876195311}]",
+          "type": "polygon",
+          "storey_floorId": "1970-01-01 00:00:00+0000",
+          "storey_floorPlan": "{\"width\":\"20000\",\"name\":\"EF644EA6-3640-4F09-80B7-1D230250EC09.png\",\"imageURI\":\"/buildingStoreyImage/07be2482-c02d-403b-a233-c29d41b1add0\",\"height\":\"3000\"}",
+          "storey_name": "Verdieping 03",
+          "storey_geoReference": "[{\"pixelCoordinates\":{\"x\":19812.0,\"y\":2696.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486001}},{\"pixelCoordinates\":{\"x\":19826.0,\"y\":303.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486305}},{\"pixelCoordinates\":{\"x\":177.0,\"y\":2706.213134765625},\"geoCoordinates\":{\"latitude\":51.44708,\"longitude\":5.485995}}]",
+          "building_address": "{\"postalBox\":\"5612 AE\",\"country\":\"Netherlands\",\"addressLines\":\"3 : Groene Loper\",\"countryCode\":\"NL\",\"region\":\"Noord Brabant\",\"town\":\"Eindhoven\"}",
+          "building_geo": "{\"latitude\":51.4482114,\"longitude\":5.4858237}",
+          "building_name": "Atlas",
+          "label": "3.423 - Kantoor",
+          "code": "3.423",
+          "room_id": "3423",
+          "room_key": "3423",
+          "display_name": "3.423",
+          "floor_n": "1970-01-01 00:00:00+0000"
+        },
+        {
+          "storey_uuid": "07be2482-c02d-403b-a233-c29d41b1add0",
+          "dataSource": "dynet",
+          "functionType": "occupancy",
+          "interiorSpace": true,
+          "sensor_name": "DUS360CR #13058",
+          "room_name": "3.123 - Kantoortuin Werklandschap",
+          "spaceType": "occupancy",
+          "uuid": "7f2d6c5e-c49a-426b-9d45-54680f364d23",
+          "coordinates": "[{latitude=51.44727313303556, longitude=5.486281453145219}, {latitude=51.447273112300905, longitude=5.486238211630698}, {latitude=51.44730006190778, longitude=5.486238178348458}, {latitude=51.44730008264246, longitude=5.486281419888526}, {latitude=51.44727313303556, longitude=5.486281453145219}]",
+          "type": "polygon",
+          "storey_floorId": "1970-01-01 00:00:00+0000",
+          "storey_floorPlan": "{\"width\":\"20000\",\"name\":\"EF644EA6-3640-4F09-80B7-1D230250EC09.png\",\"imageURI\":\"/buildingStoreyImage/07be2482-c02d-403b-a233-c29d41b1add0\",\"height\":\"3000\"}",
+          "storey_name": "Verdieping 03",
+          "storey_geoReference": "[{\"pixelCoordinates\":{\"x\":19812.0,\"y\":2696.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486001}},{\"pixelCoordinates\":{\"x\":19826.0,\"y\":303.213134765625},\"geoCoordinates\":{\"latitude\":51.448658,\"longitude\":5.486305}},{\"pixelCoordinates\":{\"x\":177.0,\"y\":2706.213134765625},\"geoCoordinates\":{\"latitude\":51.44708,\"longitude\":5.485995}}]",
+          "building_address": "{\"postalBox\":\"5612 AE\",\"country\":\"Netherlands\",\"addressLines\":\"3 : Groene Loper\",\"countryCode\":\"NL\",\"region\":\"Noord Brabant\",\"town\":\"Eindhoven\"}",
+          "building_geo": "{\"latitude\":51.4482114,\"longitude\":5.4858237}",
+          "building_name": "Atlas",
+          "label": "3.123 - Kantoortuin Werklandschap",
+          "code": "3.123",
+          "room_id": "3123",
+          "room_key": "3123",
+          "display_name": "3.123",
+          "floor_n": "1970-01-01 00:00:00+0000"
+        }
+      ]
+    }
+  },
+  "synonyms": {
+    "occupied": [
+      "busy",
+      "taken"
+    ],
+    "free": [
+      "available",
+      "vacant",
+      "empty"
+    ],
+    "meeting room": [
+      "conference room",
+      "vergaderruimte"
+    ],
+    "floor": [
+      "storey",
+      "level"
+    ]
+  },
+  "example_intents": [
+    "free meeting rooms now on floor 3",
+    "underused rooms last 30 days threshold 0.15",
+    "peak hours last 14 days on floor 2",
+    "average occupancy per floor last 7 days",
+    "top 10 rooms by occupancy past 24 hours",
+    "suggest improvements for floor 1 this month"
+  ]
+}

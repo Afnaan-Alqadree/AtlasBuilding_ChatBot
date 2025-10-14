@@ -1,0 +1,27 @@
+# venvs
+.venv/
+env/
+venv/
+
+# Python noise
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Streamlit & caches
+.streamlit/
+.cache/
+
+# Local data/state (do NOT commit)
+atlas.duckdb
+.chroma/
+
+# Secrets
+.env
+
