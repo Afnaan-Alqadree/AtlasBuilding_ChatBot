@@ -158,15 +158,3 @@ sequenceDiagram
 - **Grounding**: `data_profile.py` builds `atlas_grounding_pack.json`; `prompts.py` composes the system prompt.
 - **Future work**: predictive models to forecast occupancy/energy.
 
----
-
-## 5) How to include
-- Add a `docs/architecture.md` and paste this page.
-- Or, copy the first diagram into your README under **Architecture**.
-- For a slide: paste the first diagram into a `.md` file and export via your editor, or screenshot from GitHub’s render.
-
----
-
-### Legend
-- **Dashed boxes/arrows** = optional/future or conditional steps.
-- *RAG* = retrieval‑augmented generation (vector search over grounded text).
