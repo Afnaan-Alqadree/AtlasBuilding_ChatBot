@@ -1,7 +1,5 @@
 # AtlasBuilding Chatbot — Architecture & Flow
 
-This page gives a clear, shareable architecture of the AtlasBuilding_ChatBot project. You can paste these Mermaid blocks into your repo (e.g., `docs/architecture.md` or the README). GitHub renders Mermaid diagrams automatically.
-
 ---
 
 ## 1) System Context (overview)
